@@ -1,0 +1,25 @@
+<ion-fab vertical="bottom" horizontal="center" slot="fixed" style="bottom:1.5em">
+    <ion-fab-button color="light" (click)="mostrarPop($event)" mode="ios">
+      <ion-icon src="../../../assets/icon/plus.svg" style=" width: 2em; height: 2em;"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button tab="home">
+      <ion-icon name="home" style="width: 1.5em; height: 1.5em"></ion-icon>
+      <ion-label>Principal</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="historial">
+      <ion-icon name="clipboard" style="width: 1.5em; height: 1.5em"></ion-icon>
+      <ion-label>Historial</ion-label>
+    </ion-tab-button>
+
+
+  </ion-tab-bar>
+
+</ion-tabs>
+  

@@ -1,0 +1,29 @@
+<ion-content>
+
+  <ion-card mode="ios"> 
+
+    <img class="icon" src="../../../assets/icon/mango.svg" alt="Icono">
+
+  <ion-card-content>
+
+  <ion-item lines="none">
+    <ion-label position="floating" shape="round">Correo electrónico</ion-label>
+    <ion-input type="text" name="cedula" [(ngModel)]="cedula"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+      <ion-label position="floating" shape="round">Contraseña</ion-label>
+      <ion-input type="password" name="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <br>
+
+  <ion-button  (click)="presentLoading()" expand="full" shape="round" mode="ios">Iniciar sesión</ion-button>
+
+  </ion-card-content>
+
+  </ion-card>
+
+  
+  
+</ion-content>

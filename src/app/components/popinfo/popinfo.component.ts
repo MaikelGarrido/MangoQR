@@ -15,7 +15,6 @@ import { format } from 'path';
 export class PopinfoComponent implements OnInit {
 
   barcodeData: string;
-
   BarcodeScannerOptions: BarcodeScannerOptions;
 
   private itemsCollection: AngularFirestoreCollection<QR>;
@@ -93,6 +92,7 @@ export class PopinfoComponent implements OnInit {
             });
         } else {
           this.AlertQRFail();
+          this.cerrarPop();
           return false;
         }
       this.cerrarPop();

@@ -77,6 +77,16 @@ export class PopinfoComponent implements OnInit {
     await alert.present();
   }
 
+  async AlertQRExist() {
+    const alert = await this.alertController.create({
+      header: 'Alerta',
+      message: 'La cédula ya está registrda en la Base de datos',
+      mode: 'ios',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   Onlogout() {
     this.authService.logout();
     this.popoverCtrl.dismiss();
@@ -96,23 +106,29 @@ export class PopinfoComponent implements OnInit {
 
   scanCode() {
     this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
+
         const verificacion = barcodeData.text.length === 90;
         // tslint:disable-next-line:variable-name
         const obtener_cedula = barcodeData.text.split('/').slice(6).join();
         // tslint:disable-next-line:variable-name
         const obtener_serial = barcodeData.text.split('/').slice(5, -1).join();
+
         // Escaner cancelado
         if (barcodeData.cancelled === true) {
           this.navCtrl.back();
           return false;
         }
+
         // Si es diferente a cancelado
         if (!barcodeData.cancelled && verificacion === true) {
-          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtener_cedula).limit(1)).get().subscribe(users => {
+          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtener_cedula)
+          .limit(1))
+          .get()
+          .subscribe(users => {
             if (users.size > 0) {
               // Si encuentra un usuario con la misma cedula
               // muestras un mensaje de que ya esta o algo asi
-              this.AlertQRFail();
+              this.AlertQRExist();
               this.cerrarPop();
               return false;
             } else {

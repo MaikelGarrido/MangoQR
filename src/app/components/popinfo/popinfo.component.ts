@@ -69,7 +69,7 @@ export class PopinfoComponent implements OnInit {
 
   async AlertQRFail() {
     const alert = await this.alertController.create({
-      header: 'Alerta',
+      header: 'ALERTA',
       message: 'El código QR no pertenece a la plataforma Patria',
       mode: 'ios',
       buttons: ['OK']
@@ -79,8 +79,8 @@ export class PopinfoComponent implements OnInit {
 
   async AlertQRExist() {
     const alert = await this.alertController.create({
-      header: 'Alerta',
-      message: 'La cédula ya está registrda en la Base de datos',
+      header: 'ALERTA',
+      message: 'La cédula ya está registrada',
       mode: 'ios',
       buttons: ['OK']
     });

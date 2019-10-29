@@ -8,6 +8,20 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card mode="ios">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>Desde</ion-label>
+        <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime> 
+      </ion-item>
+
+      <ion-item lines="none">
+          <ion-label>Hasta</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime> 
+        </ion-item>
+    </ion-card-content>
+  </ion-card>
+
 
   <ion-card mode="ios" *ngFor="let QR of QR | async">
     <ion-card-content>

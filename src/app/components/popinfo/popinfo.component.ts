@@ -107,11 +107,10 @@ export class PopinfoComponent implements OnInit {
   scanCode() {
     this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
 
-        const verificacion = barcodeData.text.length === 90;
-        // tslint:disable-next-line:variable-name
-        const obtener_cedula = barcodeData.text.split('/').slice(6).join();
-        // tslint:disable-next-line:variable-name
-        const obtener_serial = barcodeData.text.split('/').slice(5, -1).join();
+        // const verificacion = barcodeData.text.length === 90;
+        const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
+        const obtenercedula = barcodeData.text.split('/').slice(6).join();
+        const obtenerserial = barcodeData.text.split('/').slice(5, -1).join();
 
         // Escaner cancelado
         if (barcodeData.cancelled === true) {
@@ -120,22 +119,21 @@ export class PopinfoComponent implements OnInit {
         }
 
         // Si es diferente a cancelado
-        if (!barcodeData.cancelled && verificacion === true) {
-          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtener_cedula)
+        if (!barcodeData.cancelled && url) {
+          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
           .limit(1))
           .get()
           .subscribe(users => {
             if (users.size > 0) {
-              // Si encuentra un usuario con la misma cedula
-              // muestras un mensaje de que ya esta o algo asi
+              // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
               this.AlertQRExist();
               this.cerrarPop();
               return false;
             } else {
-              // Si no hay ninguno entonces:
+              // Si no hay ningun registro entonces lo agrega a la base de datos de Firebase:
               this.itemsCollection.add({
-                cedula: obtener_cedula,
-                serial: obtener_serial,
+                cedula: obtenercedula,
+                serial: obtenerserial,
               });
             }
           });

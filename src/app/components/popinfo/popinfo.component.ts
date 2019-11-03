@@ -92,21 +92,20 @@ export class PopinfoComponent implements OnInit {
     this.popoverCtrl.dismiss();
   }
 
-  add(cedula: string, serial: string) {
-    const id = this.db.createId();
-    const qr: QR = {
-      id,
-      cedula,
-      serial
-    };
-    this.itemsCollection.doc(id).set(qr);
-  }
+  // add(cedula: string, serial: string) {
+  //   const id = this.db.createId();
+  //   const qr: QR = {
+  //     id,
+  //     cedula,
+  //     serial
+  //   };
+  //   this.itemsCollection.doc(id).set(qr);
+  // }
 
   // Escanner y Opciones
 
   scanCode() {
     this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
-
         // const verificacion = barcodeData.text.length === 90;
         const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
         const obtenercedula = barcodeData.text.split('/').slice(6).join();

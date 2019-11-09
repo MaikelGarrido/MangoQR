@@ -28,8 +28,12 @@ import {
 import {
   format
 } from 'path';
-import { stringify } from '@angular/core/src/render3/util';
-import { firestore } from 'firebase';
+import {
+  stringify
+} from '@angular/core/src/render3/util';
+import {
+  firestore
+} from 'firebase';
 import * as firebase from 'firebase';
 
 @Component({
@@ -96,10 +100,9 @@ export class PopinfoComponent implements OnInit {
     this.popoverCtrl.dismiss();
   }
 
-  get getTime() {
-    return firebase.firestore.FieldValue.serverTimestamp();
-  }
-  
+  // get getTime() {
+  //   return firebase.firestore.FieldValue.serverTimestamp();
+  // }
 
   // add(cedula: string, serial: string) {
   //   const id = this.db.createId();
@@ -129,23 +132,24 @@ export class PopinfoComponent implements OnInit {
         // Si es diferente a cancelado
         if (!barcodeData.cancelled && verificacion) {
           this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
-          .limit(1))
-          .get()
-          .subscribe(users => {
-            if (users.size > 0) {
-              // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
-              this.AlertQRExist();
-              this.cerrarPop();
-              return false;
-            } else {
-              // Si no hay ningun registro entonces lo agrega a la base de datos de Firebase:
-              this.itemsCollection.add({
-                cedula: obtenercedula,
-                serial: obtenerserial,
-                createdAt: new Date,
-              });
-            }
-          });
+              .limit(1))
+            .get()
+            .subscribe(users => {
+              if (users.size > 0) {
+                // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
+                this.AlertQRExist();
+                this.cerrarPop();
+                return false;
+              } else {
+                // Si no hay ningun registro entonces lo agrega a la base de datos de Firebase:
+                this.itemsCollection.add({
+                  cedula: obtenercedula,
+                  serial: obtenerserial,
+                  // tslint:disable-next-line: new-parens
+                  createdAt: new Date,
+                });
+              }
+            });
         } else {
           this.AlertQRFail();
           this.cerrarPop();

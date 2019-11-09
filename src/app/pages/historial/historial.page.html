@@ -4,54 +4,64 @@
 
   <ion-card mode="ios">
     <ion-card-content>
-      <h1 text-center>Historial</h1>
+      <h1 ion-label class="ion-text-center">Filtro por fechas</h1>
     </ion-card-content>
   </ion-card>
 
-<!-- 
   <ion-card mode="ios">
+
     <ion-card-content>
       <ion-item lines="none">
-        <ion-label>Desde</ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime> 
+        <ion-label>
+          <p>Desde</p>
+        </ion-label>
+        <!-- <ion-datetime displayFormat="DD/MM/YYYY" mode="ios" [(ngModel)="startDate"]></ion-datetime>  -->
       </ion-item>
 
       <ion-item lines="none">
-          <ion-label>Hasta</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime> 
-        </ion-item>
+        <ion-label>
+          <p>Hasta</p>
+        </ion-label>
+        <!-- <ion-datetime displayFormat="DD/MM/YYYY" mode="ios" [(ngModel)="endDate"]></ion-datetime>  -->
+      </ion-item>
     </ion-card-content>
-  </ion-card> -->
+
+  </ion-card>
+
+  <ion-card mode="ios">
+    <ion-card-content>
+      <h1 ion-label class="ion-text-center">Historial</h1>
+    </ion-card-content>
+  </ion-card>
 
   <ion-card mode="ios" *ngFor="let QR of QR | async">
     <ion-card-content>
       <ion-list>
-        
+
         <ion-item lines="none">
           <ion-icon name="finger-print" slot="start" color="primary"></ion-icon>
-            <ion-label text-wrap>
-              <p>Cédula: {{QR.cedula}}</p>
-           </ion-label>
+          <ion-label class="ion-text-wrap">
+            <p>Cédula: {{QR.cedula}}</p>
+          </ion-label>
         </ion-item>
 
         <ion-item lines="none">
           <ion-icon name="qr-scanner" slot="start" color="primary"></ion-icon>
-              <ion-label text-wrap>
-                <p>Serial: {{QR.serial}}</p>
-             </ion-label>
+          <ion-label class="ion-text-wrap">
+            <p>Serial: {{QR.serial}}</p>
+          </ion-label>
         </ion-item>
 
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
-            <ion-label text-wrap>
-              <p>Registrado: {{QR.createdAt.toMillis() | date:'yyyy/MM/dd h:mm:ss a'}}</p>
-           </ion-label>
+          <ion-label class="ion-text-wrap">
+            <p>Registrado: {{QR.createdAt.toMillis() | date:'dd/MM/yyyy h:mm a'}}</p>
+          </ion-label>
         </ion-item>
 
       </ion-list>
-    </ion-card-content>   
+    </ion-card-content>
   </ion-card>
 
-    
-</ion-content>
 
+</ion-content>

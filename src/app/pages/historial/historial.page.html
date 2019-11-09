@@ -35,7 +35,7 @@
         </ion-item>
 
         <ion-item lines="none">
-            <ion-icon name="key" slot="start" color="primary"></ion-icon>
+          <ion-icon name="qr-scanner" slot="start" color="primary"></ion-icon>
               <ion-label text-wrap>
                 <p>Serial: {{QR.serial}}</p>
              </ion-label>
@@ -44,7 +44,7 @@
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
             <ion-label text-wrap>
-              <p>Registrado: {{QR.createdAt | date: 'HH:mm aaa'}}</p>
+              <p>Registrado: {{QR.createdAt}}</p>
            </ion-label>
         </ion-item>
 

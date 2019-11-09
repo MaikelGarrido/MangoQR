@@ -28,6 +28,9 @@ import {
 import {
   format
 } from 'path';
+import { stringify } from '@angular/core/src/render3/util';
+import { firestore } from 'firebase';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-popinfo',
@@ -51,6 +54,8 @@ export class PopinfoComponent implements OnInit {
 
     this.itemsCollection = db.collection < QR > ('QR');
     this.QR = this.itemsCollection.valueChanges();
+    // this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
+
     // Opciones del escaner
     this.BarcodeScannerOptions = {
       showTorchButton: true,
@@ -58,7 +63,6 @@ export class PopinfoComponent implements OnInit {
       prompt: 'Escanea el código QR del carnet de la patria',
       formats: 'QR_CODE'
     };
-
   }
 
   ngOnInit() {}
@@ -92,6 +96,11 @@ export class PopinfoComponent implements OnInit {
     this.popoverCtrl.dismiss();
   }
 
+  get getTime() {
+    return firebase.firestore.FieldValue.serverTimestamp();
+  }
+  
+
   // add(cedula: string, serial: string) {
   //   const id = this.db.createId();
   //   const qr: QR = {
@@ -106,8 +115,8 @@ export class PopinfoComponent implements OnInit {
 
   scanCode() {
     this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
-        // const verificacion = barcodeData.text.length === 90;
-        const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
+        const verificacion = barcodeData.text.length === 90;
+        // const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
         const obtenercedula = barcodeData.text.split('/').slice(6).join();
         const obtenerserial = barcodeData.text.split('/').slice(5, -1).join();
 
@@ -118,7 +127,7 @@ export class PopinfoComponent implements OnInit {
         }
 
         // Si es diferente a cancelado
-        if (!barcodeData.cancelled && url) {
+        if (!barcodeData.cancelled && verificacion) {
           this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
           .limit(1))
           .get()
@@ -133,6 +142,7 @@ export class PopinfoComponent implements OnInit {
               this.itemsCollection.add({
                 cedula: obtenercedula,
                 serial: obtenerserial,
+                createdAt: new Date,
               });
             }
           });

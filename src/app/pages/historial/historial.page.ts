@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 
 export interface QR {
-  [x: string]: string;
+  [x: string]: any;
   cedula: string ;
   serial: string ;
+  createdAt: Date,
 }
 
 @Component({
@@ -31,6 +33,10 @@ export class HistorialPage implements OnInit {
     //     return data;
     //   });
     // }));
+  }
+
+  get timestamp() {
+    return firebase.firestore.FieldValue.serverTimestamp();
   }
 
   // Traer todos los QR

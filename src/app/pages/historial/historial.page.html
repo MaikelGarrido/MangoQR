@@ -44,7 +44,7 @@
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
             <ion-label text-wrap>
-              <p>Registrado: {{QR.createdAt}}</p>
+              <p>Registrado: {{QR.createdAt.toMillis() | date:'yyyy/MM/dd h:mm:ss a'}}</p>
            </ion-label>
         </ion-item>
 

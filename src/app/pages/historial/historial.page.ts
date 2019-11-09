@@ -24,7 +24,7 @@ export class HistorialPage implements OnInit {
 
   constructor(public db: AngularFirestore) {
     // this.itemsCollection = db.collection<QR>('QR');
-    this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('cedula', 'desc'));
+    this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     this.QR = this.itemsCollection.valueChanges();
     // this.QR = this.itemsCollection.snapshotChanges().pipe(map( changes => {
     //   return changes.map( action => {

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase';
+import {isWithinInterval, isBefore } from 'date-fns';
 
 
 export interface QR {
@@ -22,21 +23,29 @@ export class HistorialPage implements OnInit {
   private itemsCollection: AngularFirestoreCollection<QR>;
   private QR: Observable<QR[]>;
 
+  startDate;
+  endDate;
+  invalidSelection = false;
+  data = [this.QR];
+  filtered = [...this.data];
+
   constructor(public db: AngularFirestore) {
     // this.itemsCollection = db.collection<QR>('QR');
     this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     this.QR = this.itemsCollection.valueChanges();
-    // this.QR = this.itemsCollection.snapshotChanges().pipe(map( changes => {
-    //   return changes.map( action => {
-    //     const data = action.payload.doc.data() as QR;
-    //     data.id = action.payload.doc.id;
-    //     return data;
-    //   });
-    // }));
   }
 
-  get timestamp() {
-    return firebase.firestore.FieldValue.serverTimestamp();
+  loadResults() {
+    if (!this.startDate || !this.endDate) {
+      console.log('Calculando fecha');
+      return;
+    }
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(this.endDate);
+
+    this.filtered = this.data.filter(item => {
+      return isWithinInterval(new Date(), {start: startDate, end: endDate});
+    });
   }
 
   // Traer todos los QR
@@ -52,6 +61,7 @@ export class HistorialPage implements OnInit {
 
   // Mostrar QR's registrados al abrir la página
   ngOnInit() {
+    // tslint:disable-next-line: no-shadowed-variable
     this.getAllQR().subscribe(QR => {
       console.log('QR', QR);
     });

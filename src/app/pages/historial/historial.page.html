@@ -1,31 +1,24 @@
 <app-header></app-header>
 
 <ion-content>
-
   <ion-card mode="ios">
     <ion-card-content>
-      <h1 ion-label class="ion-text-center">Filtro por fechas</h1>
-    </ion-card-content>
-  </ion-card>
 
-  <ion-card mode="ios">
-
-    <ion-card-content>
       <ion-item lines="none">
         <ion-label>
           <p>Desde</p>
         </ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" mode="ios" cancelText="Cancelar" doneText="Aceptar"></ion-datetime> 
+        <ion-datetime displayFormat="DD/MM/YYYY" cancelText="Cancelar" doneText="Aceptar"></ion-datetime>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label>
           <p>Hasta</p>
         </ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" mode="ios" cancelText="Cancelar" doneText="Aceptar"></ion-datetime> 
+        <ion-datetime displayFormat="DD/MM/YYYY" ancelText="Cancelar" doneText="Aceptar"></ion-datetime>
       </ion-item>
-    </ion-card-content>
 
+    </ion-card-content>
   </ion-card>
 
   <ion-card mode="ios">
@@ -55,13 +48,11 @@
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
           <ion-label class="ion-text-wrap">
-            <p>Registrado: {{QR.createdAt.toMillis() | date:'dd/MM/yyyy h:mm a'}}</p>
+            <p>{{QR.createdAt.toMillis() | date:'dd/MM/yyyy h:mm a'}}</p>
           </ion-label>
         </ion-item>
 
       </ion-list>
     </ion-card-content>
   </ion-card>
-
-
 </ion-content>

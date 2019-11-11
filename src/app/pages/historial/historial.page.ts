@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as firebase from 'firebase';
 import {isWithinInterval, isBefore } from 'date-fns';
 
 
@@ -26,7 +25,7 @@ export class HistorialPage implements OnInit {
   startDate;
   endDate;
   invalidSelection = false;
-  data = [this.QR];
+  data = [];
   filtered = [...this.data];
 
   constructor(public db: AngularFirestore) {

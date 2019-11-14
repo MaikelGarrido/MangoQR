@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {isWithinInterval, isBefore } from 'date-fns';
+import { element } from '@angular/core/src/render3';
 
 
 export interface QR {
@@ -32,6 +33,7 @@ export class HistorialPage implements OnInit {
     // this.itemsCollection = db.collection<QR>('QR');
     this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     this.QR = this.itemsCollection.valueChanges();
+    this.data = [...this.itemsCollection];
   }
 
   loadResults() {
@@ -39,12 +41,18 @@ export class HistorialPage implements OnInit {
       console.log('Calculando fecha');
       return;
     }
-    const startDate = new Date(this.startDate);
-    const endDate = new Date(this.endDate);
+    const startDate = new Date(this.startDate).getTime();
+    const endDate = new Date(this.endDate).getTime();
 
-    this.filtered = this.data.filter(item => {
-      return isWithinInterval(new Date(), {start: startDate, end: endDate});
+    this.filtered = this.data.filter(data => {
+      return new Date(data.createdAt).getTime() >= startDate && new Date(data.createdAt).getTime() <= endDate;
     });
+
+
+
+    // this.filtered = this.data.filter(item => {
+    //   return isWithinInterval(new Date(), {start: startDate, end: endDate});
+    // });
   }
 
   // Traer todos los QR

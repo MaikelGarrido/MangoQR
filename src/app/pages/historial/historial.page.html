@@ -8,16 +8,14 @@
         <ion-label>
           <p>Desde</p>
         </ion-label>
-        <ion-datetime mode="android" placeholder="Determine una fecha" displayFormat="DD/MM/YYYY" cancelText="Cancelar" doneText="Aceptar" (ionChange)="loadResults()"
-          [(ngModel)]="startDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label>
           <p>Hasta</p>
         </ion-label>
-        <ion-datetime mode="android" placeholder="Determine una fecha" displayFormat="DD/MM/YYYY" ancelText="Cancelar" doneText="Aceptar" (ionChange)="loadResults()"
-          [(ngModel)]="endDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
 
     </ion-card-content>

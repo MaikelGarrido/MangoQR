@@ -26,14 +26,13 @@ export class HistorialPage implements OnInit {
   startDate;
   endDate;
   invalidSelection = false;
-  data = [];
+  data = [this.QR];
   filtered = [...this.data];
 
   constructor(public db: AngularFirestore) {
     // this.itemsCollection = db.collection<QR>('QR');
     this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     this.QR = this.itemsCollection.valueChanges();
-    this.data = [...this.itemsCollection];
   }
 
   loadResults() {
@@ -45,7 +44,7 @@ export class HistorialPage implements OnInit {
     const endDate = new Date(this.endDate).getTime();
 
     this.filtered = this.data.filter(data => {
-      return new Date(data.createdAt).getTime() >= startDate && new Date(data.createdAt).getTime() <= endDate;
+      // return new Date(data.).getTime() >= startDate && new Date(data.createdAt).getTime() <= endDate;
     });
 
 

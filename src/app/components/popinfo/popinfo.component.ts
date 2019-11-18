@@ -118,7 +118,7 @@ export class PopinfoComponent implements OnInit {
 
   scanCode() {
     this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
-        const verificacion = barcodeData.text.length === 90;
+        const verificacion = barcodeData.text.length === 89 || 90;
         // const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
         const obtenercedula = barcodeData.text.split('/').slice(6).join();
         const obtenerserial = barcodeData.text.split('/').slice(5, -1).join();
@@ -130,7 +130,7 @@ export class PopinfoComponent implements OnInit {
         }
 
         // Si es diferente a cancelado
-        if (!barcodeData.cancelled && verificacion) {
+        if (!barcodeData.cancelled && verificacion === true) {
           this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
               .limit(1))
             .get()
@@ -153,6 +153,7 @@ export class PopinfoComponent implements OnInit {
         } else {
           this.AlertQRFail();
           this.cerrarPop();
+          console.log(verificacion);
           return false;
         }
         this.cerrarPop();

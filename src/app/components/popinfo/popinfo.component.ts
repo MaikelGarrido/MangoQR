@@ -1,39 +1,13 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import {
-  PopoverController,
-  NavController,
-  AlertController
-} from '@ionic/angular';
-import {
-  AuthService
-} from 'src/services/auth.service';
-import {
-  BarcodeScanner,
-  BarcodeScannerOptions
-} from '@ionic-native/barcode-scanner/ngx';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection
-} from '@angular/fire/firestore';
-import {
-  QR,
-  HistorialPage
-} from '../../pages/historial/historial.page';
-import {
-  Observable
-} from 'rxjs';
-import {
-  format
-} from 'path';
-import {
-  stringify
-} from '@angular/core/src/render3/util';
-import {
-  firestore
-} from 'firebase';
+import { Component,OnInit } from '@angular/core';
+import { PopoverController,NavController,AlertController } from '@ionic/angular';
+import { AuthService } from 'src/services/auth.service';
+import { BarcodeScanner,BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+import { AngularFirestore,AngularFirestoreCollection } from '@angular/fire/firestore';
+import { QR,HistorialPage} from '../../pages/historial/historial.page';
+import { Observable } from 'rxjs';
+import { format } from 'path';
+import { stringify } from '@angular/core/src/render3/util';
+import { firestore } from 'firebase';
 import * as firebase from 'firebase';
 
 @Component({
@@ -100,10 +74,6 @@ export class PopinfoComponent implements OnInit {
     this.popoverCtrl.dismiss();
   }
 
-  // get getTime() {
-  //   return firebase.firestore.FieldValue.serverTimestamp();
-  // }
-
   // add(cedula: string, serial: string) {
   //   const id = this.db.createId();
   //   const qr: QR = {
@@ -130,7 +100,7 @@ export class PopinfoComponent implements OnInit {
         }
 
         // Si es diferente a cancelado
-        if (!barcodeData.cancelled && verificacion === true) {
+        if (!barcodeData.cancelled && verificacion) {
           this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
               .limit(1))
             .get()

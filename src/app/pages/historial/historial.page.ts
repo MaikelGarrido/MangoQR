@@ -33,7 +33,14 @@ export class HistorialPage implements OnInit {
     // this.itemsCollection = db.collection<QR>('QR');
     this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     this.QR = this.itemsCollection.valueChanges();
+
+    // getSpecificTicket(dateFrom: Date, dateTo: Date): any {
+    //   this.ticketList = this.afDatabase.list('tickets', ref =>
+    //   ref.orderByChild('issuedOn').startAt(dateFrom.toString()).endAt(dateTo.toString()));
+    //   return this.ticketList.snapshotChanges();
+    // }
   }
+
 
   loadResults() {
     if (!this.startDate || !this.endDate) {
@@ -44,14 +51,9 @@ export class HistorialPage implements OnInit {
     const endDate = new Date(this.endDate).getTime();
 
     this.filtered = this.data.filter(data => {
-      // return new Date(data.).getTime() >= startDate && new Date(data.createdAt).getTime() <= endDate;
+      return new Date(this.startDate).getTime() >= startDate && new Date(this.endDate).getTime() <= endDate;
     });
-
-
-
-    // this.filtered = this.data.filter(item => {
-    //   return isWithinInterval(new Date(), {start: startDate, end: endDate});
-    // });
+    console.log(this.startDate, this.endDate)
   }
 
   // Traer todos los QR

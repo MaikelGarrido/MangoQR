@@ -1,20 +1,28 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-col col-5>
-                <ion-card class="ion-padding ion-text-center" color="primary" mode="ios" color="light" (click)="scanCode()">
+
+            <ion-col>
+                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="scanCode()">
                     <ion-icon src="../../../assets/icon/codigo-qr.svg" class="icono"></ion-icon>
-                    <p style="font-size: 1.1em">Escanear QR</p>
+                    <p>Escanear QR</p>
                 </ion-card>
             </ion-col>
 
-            <ion-col col-5>
-                    <ion-card class="ion-padding ion-text-center" color="primary" mode="ios" color="light" (click)="Onlogout()">
-                        <ion-icon name="exit"></ion-icon>
-                        <p style="font-size: 1.1em">Cerrar sesión</p>
-                    </ion-card>
-                </ion-col>
-        </ion-row>
+            <ion-col>
+                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="Onlogout()">
+                    <ion-icon name="exit"></ion-icon>
+                    <p>Cerrar sesión</p>
+                </ion-card>
+            </ion-col>
 
+            <ion-col>
+                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="reporte()">
+                    <ion-icon name="add"></ion-icon>
+                    <p>Reporte</p>
+                </ion-card>
+            </ion-col>
+
+        </ion-row>
     </ion-grid>
 </ion-content>

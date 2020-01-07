@@ -74,15 +74,8 @@ export class PopinfoComponent implements OnInit {
     this.popoverCtrl.dismiss();
   }
 
-  // add(cedula: string, serial: string) {
-  //   const id = this.db.createId();
-  //   const qr: QR = {
-  //     id,
-  //     cedula,
-  //     serial
-  //   };
-  //   this.itemsCollection.doc(id).set(qr);
-  // }
+  reporte() {
+  }
 
   // Escanner y Opciones
 
@@ -101,10 +94,7 @@ export class PopinfoComponent implements OnInit {
 
         // Si es diferente a cancelado
         if (!barcodeData.cancelled && verificacion) {
-          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula)
-              .limit(1))
-            .get()
-            .subscribe(users => {
+          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula).limit(1)).get().subscribe(users => {
               if (users.size > 0) {
                 // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
                 this.AlertQRExist();
@@ -115,8 +105,8 @@ export class PopinfoComponent implements OnInit {
                 this.itemsCollection.add({
                   cedula: obtenercedula,
                   serial: obtenerserial,
-                  // tslint:disable-next-line: new-parens
-                  createdAt: new Date,
+                  createdAt: new Date().getTime(),
+                  endDate: new Date().getTime(),
                 });
               }
             });

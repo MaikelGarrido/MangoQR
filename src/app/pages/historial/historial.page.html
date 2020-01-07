@@ -42,7 +42,7 @@
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
           <ion-label class="ion-text-wrap">
-            <p>{{QR.createdAt.toMillis() | date:'dd/MM/yyyy h:mm a'}}</p>
+            <p>{{QR.createdAt.toDate() | date:'dd/MM/yyyy'}}</p>
           </ion-label>
         </ion-item>
 

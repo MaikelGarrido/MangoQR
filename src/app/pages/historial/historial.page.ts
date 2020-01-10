@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {isWithinInterval, isBefore } from 'date-fns';
+import { format } from 'date-fns/esm';
 
 
 export interface QR {
@@ -40,11 +41,29 @@ export class HistorialPage implements OnInit {
     // const citiesRef = db.collection('QR', ref => ref.orderBy('createdAt').endAt(1000000));
     // console.log(citiesRef);
 
+    // this.startDate = new Date('').toISOString();
+
+    // https://www.joshmorony.com/prevent-access-to-pages-in-ionic-with-angular-route-guards/
+    // https://www.joshmorony.com/native-web-facebook-authentication-with-firebase-in-ionic/
+    // https://stackoverflow.com/questions/4673527/converting-milliseconds-to-a-date-jquery-javascript
+    // https://stackoverflow.com/questions/56072916/having-a-problem-when-converting-firebase-timestamp-in-standard-format
+    // https://stackoverflow.com/questions/58679592/how-to-convert-firebase-firestore-timestamp-to-zulu-datetime-format-in-firebase
+    // https://stackoverflow.com/questions/57211166/firestore-timestamp-is-seconds-0-nanoseconds-0-when-using-retrofit
+    // https://github.com/datejs/Datejs
+    // https://stackoverflow.com/questions/53336061/how-to-save-date-in-angular-as-a-timestamp-to-firestore
+    // https://stackoverflow.com/questions/53482750/convert-date-to-timestamp-for-storing-into-firebase-firestore-in-javascript
+
   }
 
   loadResults() {
+
+    const prueba = new Date(1578268750317).toLocaleDateString().split(' ');
+    console.log(prueba);
+
     if (!this.startDate || !this.endDate) {
         console.log('Calculando fecha');
+        console.log(this.startDate);
+        console.log(this.endDate);
         return;
     }
 

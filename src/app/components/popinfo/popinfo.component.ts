@@ -105,8 +105,8 @@ export class PopinfoComponent implements OnInit {
                 this.itemsCollection.add({
                   cedula: obtenercedula,
                   serial: obtenerserial,
-                  createdAt: new Date().getTime(),
-                  endDate: new Date().getTime(),
+                  createdAt: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
+                  endDate: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
                 });
               }
             });

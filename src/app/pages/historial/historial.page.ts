@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {isWithinInterval, isBefore } from 'date-fns';
-import { format } from 'date-fns/esm';
 
 
 export interface QR {
@@ -25,9 +23,8 @@ export class HistorialPage implements OnInit {
   private itemsCollection: AngularFirestoreCollection<QR>;
   private QR: Observable<QR[]>;
 
-  startDate;
-  endDate;
-  myDates = [];
+  startDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
+  endDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
 
   constructor(public db: AngularFirestore) {
     // this.itemsCollection = db.collection<QR>('QR');
@@ -56,9 +53,15 @@ export class HistorialPage implements OnInit {
   }
 
   loadResults() {
+    // new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/')
+    // const prueba = new Date(1578268750317).toLocaleDateString().split(' ');
+    // console.log(prueba);
+    // const fecha1 = new Date(this.startDate).toLocaleDateString('en-US');
+    // console.log(fecha1);
 
-    const prueba = new Date(1578268750317).toLocaleDateString().split(' ');
-    console.log(prueba);
+    // this.startDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
+    // console.log(this.startDate);
+    // this.endDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
 
     if (!this.startDate || !this.endDate) {
         console.log('Calculando fecha');
@@ -67,20 +70,17 @@ export class HistorialPage implements OnInit {
         return;
     }
 
-    const startDate = new Date(this.startDate).getTime();
-    const endDate = new Date(this.endDate).getTime();
-
-    // const startfulldate = this.db.firestore.batch.length(new Date(1556062581000));
-    this.db.collection('QR', ref => ref.where('createdAt', '==', startDate)).get().subscribe(ref => {
-        const jsonvalue: any[] = [];
-        ref.forEach(docs => {
-          jsonvalue.push(docs.data());
-           });
-        console.log(jsonvalue);
-        return;
-            // }).catch( error => {
-            //     res.status(500).send(error);
-            });
+    // // const startfulldate = this.db.firestore.batch.length(new Date(1556062581000));
+    this.db.collection('QR', ref => ref.where('createdAt', '==', '11/01/2020')).get().subscribe(ref => {
+      const jsonvalue: any[] = [];
+      ref.forEach(docs => {
+        jsonvalue.push(docs.data());
+      });
+      console.log(jsonvalue);
+      return;
+      // }).catch( error => {
+      //     res.status(500).send(error);
+    });
   }
 
   // Traer todos los QR

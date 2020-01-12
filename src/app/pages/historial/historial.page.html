@@ -8,14 +8,14 @@
         <ion-label>
           <p>Desde</p>
         </ion-label>
-        <ion-datetime max="2030" min="2019" displayFormat="YYYY-DD-MM" (ionChange)="loadResults()" [(ngModel)]="startDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate" ></ion-datetime>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label>
           <p>Hasta</p>
         </ion-label>
-        <ion-datetime max="2030" min="2019" displayFormat="YYYY-DD-MM" (ionChange)="loadResults()" [(ngModel)]="endDate"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" ></ion-datetime>
       </ion-item>
 
     </ion-card-content>

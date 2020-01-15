@@ -1,9 +1,9 @@
-import { Component,OnInit } from '@angular/core';
-import { PopoverController,NavController,AlertController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { PopoverController, NavController, AlertController } from '@ionic/angular';
 import { AuthService } from 'src/services/auth.service';
-import { BarcodeScanner,BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
-import { AngularFirestore,AngularFirestoreCollection } from '@angular/fire/firestore';
-import { QR,HistorialPage} from '../../pages/historial/historial.page';
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { QR, HistorialPage} from '../../pages/historial/historial.page';
 import { Observable } from 'rxjs';
 import { format } from 'path';
 import { stringify } from '@angular/core/src/render3/util';

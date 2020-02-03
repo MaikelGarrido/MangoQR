@@ -28,8 +28,8 @@ export class HistorialPage implements OnInit {
 
   constructor(public db: AngularFirestore) {
     // this.itemsCollection = db.collection<QR>('QR');
-    this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
-    this.QR = this.itemsCollection.valueChanges();
+    // this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
+    // this.QR = this.itemsCollection.valueChanges();
 
     // this.db.collection('QR').doc('EDbal1KTfmlZg1WTlu0r').get().forEach(doc => {
     //   console.log(doc.data().createdAt);
@@ -37,13 +37,6 @@ export class HistorialPage implements OnInit {
   }
 
   loadResults() {
-    // this.startDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
-    // console.log(this.startDate);
-
-    // new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/')
-    // const prueba = new Date(1578268750317).toLocaleDateString().split(' ');
-    // console.log(prueba);
-
     const fecha1 = new Date(this.startDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
     const fecha2 = new Date(this.endDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
     console.log('Fecha inicial:' + fecha1);
@@ -56,35 +49,38 @@ export class HistorialPage implements OnInit {
         return;
     }
 
+    this.itemsCollection = this.db.collection('QR', ref => ref.where('createdAt', '>=', fecha1) && ref.where('endDate', '<=', fecha2));
+    this.QR = this.itemsCollection.valueChanges();
 
-    this.db.collection('QR', ref => ref.where('createdAt', '>=', fecha1) && ref.where('endDate', '<=', fecha2)).get().subscribe(ref => {
-      const jsonvalue: any[] = [];
-      ref.forEach(docs => {
-        jsonvalue.push(docs.data());
-      });
-      console.log(jsonvalue);
-      return;
-      // }).catch( error => {
-      //     res.status(500).send(error);
-    });
+
+    // this.db.collection('QR', ref => ref.where('createdAt', '>=', fecha1) && ref.where('endDate', '<=', fecha2)).get().subscribe(ref => {
+    //   const jsonvalue: any[] = [];
+    //   ref.forEach(docs => {
+    //     jsonvalue.push(this.getAllQR);
+    //   });
+    //   console.log(jsonvalue);
+    //   return;
+    //   // }).catch( error => {
+    //   //     res.status(500).send(error);
+    // });
   }
 
   // Traer todos los QR
 getAllQR() {
-    return this.QR = this.itemsCollection.snapshotChanges().pipe(map( changes => {
-      return changes.map( action => {
-        const data = action.payload.doc.data() as QR;
-        data.id = action.payload.doc.id;
-        return data;
-      });
-    }));
+    // return this.QR = this.itemsCollection.snapshotChanges().pipe(map( changes => {
+    //   return changes.map( action => {
+    //     const data = action.payload.doc.data() as QR;
+    //     data.id = action.payload.doc.id;
+    //     return data;
+    //   });
+    // }));
   }
 
   // Mostrar QR's registrados al abrir la página
 ngOnInit() {
     // tslint:disable-next-line: no-shadowed-variable
-    this.getAllQR().subscribe(QR => {
-      console.log('QR', QR);
-    });
+    // this.getAllQR().subscribe(QR => {
+    //   console.log('QR', QR);
+    // });
   }
 }

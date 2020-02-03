@@ -16,6 +16,8 @@ import { ComponentsModule } from './components/components.module';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
+import { File } from '@ionic-native/file/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -33,6 +35,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     StatusBar,
     SplashScreen,
     BarcodeScanner,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

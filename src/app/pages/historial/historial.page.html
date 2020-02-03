@@ -18,6 +18,8 @@
         <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" ></ion-datetime>
       </ion-item>
 
+      <ion-button (click)="generarPDF()" expand="full" shape="round" mode="ios">Generar PDF</ion-button>
+
     </ion-card-content>
   </ion-card>
 

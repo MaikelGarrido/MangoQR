@@ -17,6 +17,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,7 @@ import { File } from '@ionic-native/file/ngx';
     SplashScreen,
     BarcodeScanner,
     File,
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

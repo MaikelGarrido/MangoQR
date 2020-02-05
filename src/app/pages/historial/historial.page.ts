@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import * as pdfmake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { File } from '@ionic-native/file/ngx';
-import { NavController, ToastController } from '@ionic/angular';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { NavController, ToastController, Platform } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 
 
@@ -27,6 +28,7 @@ export class HistorialPage implements OnInit {
   private itemsCollection: AngularFirestoreCollection<QR>;
   private QR: Observable<QR[]>;
   private data = [];
+  pdf: any;
 
   startDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
   endDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
@@ -34,7 +36,9 @@ export class HistorialPage implements OnInit {
   constructor(public db: AngularFirestore,
               public navCtrl: NavController,
               public file: File,
-              public toastCtrl: ToastController) {
+              public fileOpener: FileOpener,
+              public toastCtrl: ToastController,
+              public platform: Platform) {
     // this.itemsCollection = db.collection<QR>('QR');
 
     // this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
@@ -107,47 +111,15 @@ ngOnInit() {
   //   this.startDate = date.split('-')[2] + '-' + date.split('-')[1] + '-' + date.split('-')[0];
   // }
 
-  // Generando tabla y pdf
-  // cantWidths(columns) {
-  //   const widths = [];
-  //   columns.forEach(() => {
-  //     widths.push('auto');
-  //   });
-  //   return widths;
-  // }
-
-  // buildTableBody(data, columns) {
-  //     const body = [];
-  //     body.push(columns);
-  //     // tslint:disable-next-line:only-arrow-functions
-  //     data.forEach(function(row) {
-  //         const dataRow = [];
-  //         // tslint:disable-next-line:only-arrow-functions
-  //         columns.forEach(function(column) {
-  //             dataRow.push(row[column].toString());
-  //         });
-  //         body.push(dataRow);
-  //     });
-  //     return body;
-  // }
-
-  // table(data, columns) {
-  //     return {
-  //         table: {
-  //           widths: this.cantWidths(columns),
-  //             headerRows: 1,
-  //             body: this.buildTableBody(data, columns)
-  //         }
-  //     };
-  // }
-
   generarPDF() {
     pdfmake.vfs = pdfFonts.pdfMake.vfs;
+    const self = this;
+
     const data = [
       ['Cédula', 'Serial', 'Fecha escaneado']
     ];
 
-    this.data.forEach(user =>{
+    this.data.forEach(user => {
       data.push([user.cedula, user.serial, user.createdAt]);
       console.log('position', user);
     });
@@ -214,6 +186,28 @@ ngOnInit() {
       }
     }
     };
-    pdfmake.createPdf(docDefinition).open();
+
+    this.pdf = pdfmake.createPdf(docDefinition);
+    this.openPDF();
+    // this.pdf.download();
+    // pdfmake.createPdf(docDefinition).open();
   }
+
+    openPDF() {
+      if (this.platform.is('cordova')) {
+        this.pdf.getBuffer((buffer) => {
+          const blob = new Blob([ buffer ], { type: 'application/pdf' });
+          this.file
+            .writeFile(this.file.dataDirectory, 'Bitacora.pdf', blob, { replace: true })
+            .then((fileEntry) => {
+              this.fileOpener.open(
+                this.file.dataDirectory + 'Bitacora.pdf',
+                'application/pdf'
+              );
+            });
+        });
+        return true;
+      }
+      this.pdf.download();
+    }
 }

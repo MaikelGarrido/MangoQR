@@ -5,8 +5,9 @@ import * as pdfmake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
-import { NavController, ToastController, Platform } from '@ionic/angular';
+import { NavController, ToastController, Platform, AlertController, LoadingController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
+import { isBefore, parseISO } from 'date-fns';
 
 
 export interface QR {
@@ -24,32 +25,35 @@ export interface QR {
 })
 
 export class HistorialPage implements OnInit {
-
   private itemsCollection: AngularFirestoreCollection<QR>;
   private QR: Observable<QR[]>;
   private data = [];
   pdf: any;
 
-  startDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
-  endDate = new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/');
+  date = new Date();
+  dia = this.date.getDate();
+  mes = this.date.getMonth();
+  año = this.date.getFullYear();
+  fecha = `${this.dia}/${this.mes}/${this.año}`;
+
+  startDate = '';
+  endDate = '';
 
   constructor(public db: AngularFirestore,
               public navCtrl: NavController,
               public file: File,
               public fileOpener: FileOpener,
               public toastCtrl: ToastController,
-              public platform: Platform) {
+              public platform: Platform,
+              public alertController: AlertController,
+              public loadingCtrl: LoadingController) {
     // this.itemsCollection = db.collection<QR>('QR');
 
     // this.itemsCollection = db.collection<QR>('QR', ref => ref.orderBy('createdAt', 'desc'));
     // this.QR = this.itemsCollection.valueChanges();
   }
 
-  loadResults() {
-    const fecha1 = new Date(this.startDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
-    const fecha2 = new Date(this.endDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
-    console.log('Fecha inicial:' + fecha1);
-    console.log('Fecha final:' + fecha2);
+  async loadResults() {
 
     if (!this.startDate || !this.endDate) {
         console.log('Calculando fecha');
@@ -58,11 +62,15 @@ export class HistorialPage implements OnInit {
         return;
     }
 
-    this.itemsCollection = this.db.collection('QR', ref =>
-    ref.where('createdAt', '>=', fecha1)
-    && ref.where('endDate', '<=', fecha2));
+    const fecha1 = new Date(this.startDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
+    const fecha2 = new Date(this.endDate).toISOString().replace(/T.*/, '').split('-').reverse().join('/');
+    console.log('Fecha inicial:' + fecha1 );
+    console.log('Fecha final:' + fecha2 );
 
+    this.itemsCollection = this.db.collection('QR', ref =>
+    ref.where('createdAt', '>=', fecha1) && ref.where('endDate', '<=', fecha2));
     this.QR = this.itemsCollection.valueChanges();
+
     this.data = [];
 
     const userDoc = this.itemsCollection;
@@ -113,7 +121,6 @@ ngOnInit() {
 
   generarPDF() {
     pdfmake.vfs = pdfFonts.pdfMake.vfs;
-    const self = this;
 
     const data = [
       ['Cédula', 'Serial', 'Fecha escaneado']
@@ -124,6 +131,11 @@ ngOnInit() {
       console.log('position', user);
     });
 
+    if (this.data.length === 0) {
+      this.presentAlert();
+      return false;
+    }
+
 
     const docDefinition = {
       footer: (currentPage, pageCount) =>
@@ -131,13 +143,13 @@ ngOnInit() {
 
       content: [
         {
-        text: '',
+        text: this.fecha,
         width: '*',
         alignment: 'right',
         style: 'small'
       },
         {
-        text: 'Familias escaneadas',
+        text: 'Personas escaneadas',
         width: '*',
         alignment: 'center',
         style: 'header'
@@ -146,7 +158,7 @@ ngOnInit() {
         width: '*',
         alignment: 'center',
         style: 'subheader',
-        text: 'Registro de todas las familias escaneadas'
+        text: 'Registro de todos los QR escaneados'
       },
       {
         columns: [
@@ -154,7 +166,8 @@ ngOnInit() {
           {
             width: 'auto',
             table: {
-              body: data
+              body: data,
+              widths: ['*', '*', '*']
             }
           },
           { width: '*', text: ''}
@@ -193,21 +206,85 @@ ngOnInit() {
     // pdfmake.createPdf(docDefinition).open();
   }
 
-    openPDF() {
+    async openPDF() {
+      const loading = await this.loadingCtrl.create({
+        mode: 'ios',
+        message: 'Generando PDF...',
+        spinner: 'lines-small'
+      });
+      await loading.present();
       if (this.platform.is('cordova')) {
         this.pdf.getBuffer((buffer) => {
           const blob = new Blob([ buffer ], { type: 'application/pdf' });
           this.file
-            .writeFile(this.file.dataDirectory, 'Bitacora.pdf', blob, { replace: true })
-            .then((fileEntry) => {
+            .writeFile(this.file.dataDirectory, 'Escaneados.pdf', blob, { replace: true })
+            .then(async (fileEntry) => {
+              // tslint:disable-next-line: no-shadowed-variable
+              const toast = await this.toastCtrl.create({
+                message: '¡PDF creado exitosamente!',
+                mode: 'ios',
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
               this.fileOpener.open(
-                this.file.dataDirectory + 'Bitacora.pdf',
+                this.file.dataDirectory + 'Escaneados.pdf',
                 'application/pdf'
               );
             });
         });
+        loading.dismiss();
         return true;
       }
+      const toast = await this.toastCtrl.create({
+        message: '¡PDF creado exitosamente!',
+        mode: 'ios',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
       this.pdf.download();
+      loading.dismiss();
     }
+
+    async presentAlert() {
+      const alert = await this.alertController.create({
+        header: 'Alerta',
+        message: 'No hay registro',
+        mode: 'ios',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+
+    // async presentLoading() {
+    //   const loading = await this.loadingCtrl.create({
+    //     mode: 'ios',
+    //     message: 'Generando PDF...',
+    //     spinner: 'lines-small'
+    //   });
+    //   await loading.present();
+    //   if (this.platform.is('cordova')) {
+    //     this.pdf.getBuffer((buffer) => {
+    //       const blob = new Blob([ buffer ], { type: 'application/pdf' });
+    //       this.file
+    //         .writeFile(this.file.dataDirectory, 'Escaneados.pdf', blob, { replace: true })
+    //         .then(async (fileEntry) => {
+    //           // tslint:disable-next-line: no-shadowed-variable
+    //           const toast = await this.toastCtrl.create({
+    //             message: '¡PDF creado exitosamente!',
+    //             mode: 'ios',
+    //             duration: 3000,
+    //             position: 'top'
+    //           });
+    //           toast.present();
+    //           this.fileOpener.open(
+    //             this.file.dataDirectory + 'Escaneados.pdf',
+    //             'application/pdf'
+    //           );
+    //         });
+    //     });
+    //     return true;
+    //   loading.dismiss();
+    // }
 }

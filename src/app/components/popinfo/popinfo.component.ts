@@ -69,51 +69,67 @@ export class PopinfoComponent implements OnInit {
     await alert.present();
   }
 
+  async AlertQR() {
+    const alert = await this.alertController.create({
+      header: 'ALERTA',
+      message: 'El QR no pertenece a la platarforma patria',
+      mode: 'ios',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   Onlogout() {
     this.authService.logout();
     this.popoverCtrl.dismiss();
   }
-
-  reporte() {
-  }
-
+  
   // Escanner y Opciones
-
   scanCode() {
-    this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => {
-        const verificacion = barcodeData.text.length === 89 || 90;
-        // const url =  'https://carnetdelapatria.org.ve'.indexOf('carnetdelpatria');
-        const obtenercedula = barcodeData.text.split('/').slice(6).join();
-        const obtenerserial = barcodeData.text.split('/').slice(5, -1).join();
-
+    this.barcodeScanner.scan(this.BarcodeScannerOptions).then(barcodeData => { 
         // Escaner cancelado
         if (barcodeData.cancelled === true) {
           this.navCtrl.back();
           return false;
         }
-
-        // Si es diferente a cancelado
-        if (!barcodeData.cancelled && verificacion) {
-          this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula).limit(1)).get().subscribe(users => {
-              if (users.size > 0) {
-                // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
-                this.AlertQRExist();
-                this.cerrarPop();
-                return false;
-              } else {
-                // Si no hay ningun registro entonces lo agrega a la base de datos de Firebase:
-                this.itemsCollection.add({
-                  cedula: obtenercedula,
-                  serial: obtenerserial,
-                  createdAt: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
-                  endDate: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
-                });
-              }
-            });
+        const hola = barcodeData.text;
+        if (hola.includes('https://carnetdelapatria.gob.ve/info/')) {
+          const verificacion = barcodeData.text.length === 89 || 90;
+          console.log(barcodeData);
+          const obtenercedula = barcodeData.text.split('/').slice(6).join();
+          const obtenerserial = barcodeData.text.split('/').slice(5, -1).join();
+          // Si es diferente a cancelado
+          if (!barcodeData.cancelled && verificacion) {
+            this.db.collection('QR', (ref) => ref.where('cedula', '==', obtenercedula).limit(1)).get().subscribe(users => {
+                if (users.size > 0) {
+                  // Si encuentra una persona ya escaneada con la misma cédula muestra un mensaje de alerta
+                  this.AlertQRExist();
+                  this.cerrarPop();
+                  return false;
+                }
+                if (obtenercedula && obtenercedula === '') {
+                  this.AlertQR();
+                  this.cerrarPop();
+                  return false;
+                } else {
+                  // Si no hay ningun registro entonces lo agrega a la base de datos de Firebase:
+                  this.itemsCollection.add({
+                    cedula: obtenercedula,
+                    serial: obtenerserial,
+                    createdAt: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
+                    endDate: new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('/'),
+                  });
+                }
+              });
+            } else {
+              this.AlertQRFail();
+              this.cerrarPop();
+              console.log(verificacion);
+              return false;
+            }
         } else {
           this.AlertQRFail();
           this.cerrarPop();
-          console.log(verificacion);
           return false;
         }
         this.cerrarPop();

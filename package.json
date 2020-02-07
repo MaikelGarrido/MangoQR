@@ -36,7 +36,7 @@
     "cordova-plugin-file-opener2": "^3.0.0",
     "cordova-plugin-qrscanner": "^3.0.1",
     "core-js": "^2.6.11",
-    "date-fns": "^2.8.1",
+    "date-fns": "^2.9.0",
     "firebase": "^6.6.2",
     "install": "^0.13.0",
     "node-pre-gyp": "^0.14.0",

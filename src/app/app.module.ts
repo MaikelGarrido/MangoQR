@@ -29,7 +29,8 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
     AngularFireModule.initializeApp(firebaseConfig, 'MangoQR'),
     AngularFireAuthModule,
     ComponentsModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence()
   ],
 
   providers: [

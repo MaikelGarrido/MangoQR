@@ -8,14 +8,14 @@
         <ion-label>
           <p>Desde</p>
         </ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate" ></ion-datetime>
+        <ion-datetime placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label>
           <p>Hasta</p>
         </ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" ></ion-datetime>
+        <ion-datetime placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" [min]="startDate"></ion-datetime>
       </ion-item>
 
       <ion-button (click)="generarPDF()" expand="full" shape="round" mode="ios">Generar PDF</ion-button>

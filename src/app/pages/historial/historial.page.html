@@ -5,17 +5,26 @@
     <ion-card-content>
 
       <ion-item lines="none">
+        <ion-label>Tipo de beneficio</ion-label>
+        <ion-select placeholder="Elija tipo de beneficio" [(ngModel)]="beneficio" value=""> 
+          <ion-select-option value="bolsa">Bolsa</ion-select-option>
+          <ion-select-option value="bombona">Bombona</ion-select-option>
+          <ion-select-option value="salud">Salud</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none">
         <ion-label>
           <p>Desde</p>
         </ion-label>
-        <ion-datetime placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate"></ion-datetime>
+        <ion-datetime value="" doneText="Aceptar" cancelText="Cancelar" placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
 
       <ion-item lines="none">
         <ion-label>
           <p>Hasta</p>
         </ion-label>
-        <ion-datetime placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" [min]="startDate"></ion-datetime>
+        <ion-datetime value="" placeholder="Ingrese una fecha" displayFormat="DD/MM/YYYY" (ionChange)="loadResults()" [(ngModel)]="endDate" [min]="startDate"></ion-datetime>
       </ion-item>
 
       <ion-button (click)="generarPDF()" expand="full" shape="round" mode="ios">Generar PDF</ion-button>
@@ -30,9 +39,9 @@
       <ion-list>
 
         <ion-item lines="none">
-          <ion-icon name="finger-print" slot="start" color="primary"></ion-icon>
+          <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
           <ion-label class="ion-text-wrap">
-            <p>Cédula: {{QR.cedula}}</p>
+            <p> {{QR.cedula}} - {{QR.nombre}}</p>
           </ion-label>
         </ion-item>
 
@@ -46,7 +55,14 @@
         <ion-item lines="none">
           <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
           <ion-label class="ion-text-wrap">
-            <p>{{QR.createdAt}}</p>
+            <p>Escaneado: {{QR.createdAt}}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon name="information-circle-outline" slot="start" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <p>Tipo de beneficio: {{QR.tipo}}</p>
           </ion-label>
         </ion-item>
 

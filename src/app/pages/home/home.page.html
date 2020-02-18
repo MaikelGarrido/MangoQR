@@ -5,9 +5,64 @@
 
   <ion-card mode="ios">
     <ion-card-content class="ion-text-center">
-      <h1>Bienvenido a MangoQR!</h1>
+      <h1>¡Bienvenido a MangoQR!</h1>
     </ion-card-content>
   </ion-card>
 
+  <ion-card mode="ios">
+    <img class="centrar" src="../../../assets/icon/bg4.svg"/>
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Últimas 5 personas escaneadas</ion-card-title>
+    </ion-card-header>
+    <!-- <ion-card-content style="font-size: 20px;">
+      En esta sección se verán reflejada las 5 últimas personas que fueron escaneadas y registradas en la base de datos.
+    </ion-card-content> -->
+  </ion-card>
+
+  <ion-card mode="ios" *ngFor="let QR of QR | async">
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none">
+          <ion-icon name="ios-person" slot="start" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <p> {{QR.cedula}} - {{QR.nombre}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <ion-card mode="ios">
+    <ion-card-content>
+        <ion-item lines="none" (click)="scanBolsa()">
+          <ion-icon name="qr-code-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <p>Escanear QR para entrega de bolsa</p>
+          </ion-label>
+        </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card mode="ios">
+    <ion-card-content>
+        <ion-item lines="none">
+          <ion-icon name="qr-code-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <p>Escanear QR para entrega de bombona</p>
+          </ion-label>
+        </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card mode="ios">
+    <ion-card-content>
+        <ion-item lines="none">
+          <ion-icon name="qr-code-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <p>Escanear QR por evento de jornada de Salud</p>
+          </ion-label>
+        </ion-item>
+    </ion-card-content>
+  </ion-card> -->
 
 </ion-content>

@@ -1,20 +1,27 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-
+            
             <ion-col>
                 <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="scanCode()">
                     <ion-icon src="../../../assets/icon/codigo-qr.svg" class="icono"></ion-icon>
-                    <p>Escanear QR</p>
+                    <p>Entrega de bolsa</p>
                 </ion-card>
             </ion-col>
 
-            <!-- <ion-col>
-                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="Onlogout()">
-                    <ion-icon name="exit"></ion-icon>
-                    <p>Cerrar sesión</p>
+            <ion-col>
+                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="scanBombonas()">
+                    <ion-icon src="../../../assets/icon/codigo-qr.svg" class="icono"></ion-icon>
+                    <p>Entrega de bombona</p>
                 </ion-card>
-            </ion-col> -->
+            </ion-col>
+
+            <ion-col>
+                <ion-card class="ion-text-center padding" color="primary" mode="ios" color="light" (click)="scanSalud()">
+                    <ion-icon src="../../../assets/icon/codigo-qr.svg" class="icono"></ion-icon>
+                    <p>Jornada de salud</p>
+                </ion-card>
+            </ion-col>
 
         </ion-row>
     </ion-grid>
